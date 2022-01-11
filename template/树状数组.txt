@@ -1,0 +1,77 @@
+//树状数组
+class TreeArray {
+private:
+	vector<int> ar;
+	vector<int> treeAr; //treeAr的下标是ar的下标加1
+	int n;
+public:
+	TreeArray(){
+		n = 0;
+	}
+
+    void resetEmpty(int n){ 
+        vector<int> nums(n);
+        reset(nums);
+    } 
+	
+	void reset(vector<int> nums){
+		n = nums.size();
+		ar.resize(n);
+		ar.assign(nums.begin(), nums.end());
+		treeAr.resize(n+1);
+		for(int i = 0; i <= n; i++){
+			treeAr[i] = 0;
+		}
+		for(int i = 0; i < ar.size(); i++){
+			add(i, ar[i]);
+		}
+	}
+
+	inline int lowbit(int i){
+		return i & (-i);
+	}
+
+	void update(int index, int val) {
+		int delta = val - ar[index];
+		ar[index] = val;
+		add(index, delta);
+	}
+
+	void add(int i, int val){
+		i++;
+		while(i <= n){
+			treeAr[i] += val;
+			i += lowbit(i);
+		}
+	}
+
+	//查询区间[1,i]的和
+	int sum(int i){
+		int s = 0;
+		i++;
+		while(i > 0){
+			s += treeAr[i];
+			i -= lowbit(i);
+		}
+		return s;
+	}
+
+		//通过遍历[l,r]之间的区间来求和
+	int queryOfRange(int l, int r){
+		int s = 0, i, st;
+		l++;
+		r++;
+		i = r; 
+		while(i >= l){ 
+			st = i - lowbit(i) + 1; 
+			if(st < l){ 
+				s += ar[--i]; 
+			}else{ 
+				s += treeAr[i]; 
+				i = st - 1; 
+			}
+		}
+		return s;
+	}
+
+};
