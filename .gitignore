@@ -5,6 +5,7 @@ cmake_install.cmake
 CMakeFiles/
 log/
 tags
+nohup.txt
 # Prerequisites
 *.d
 
