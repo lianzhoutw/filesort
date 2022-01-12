@@ -4,7 +4,8 @@
 
 
 void iniNumToFile(char* filePath){
-	const int NUM = 100000000;
+	//const int NUM = 100000000;
+	const int NUM = 100;
 	const int BUF_LEN = 32;
 	char buf[BUF_LEN];
 	FILE *file = NULL;

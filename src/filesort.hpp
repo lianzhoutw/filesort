@@ -186,8 +186,7 @@ public:
 				return -1;
 			}
 			set_seg_file_name(sort_file_name, work_dir, file_num);
-			printf("right=%d size=%d 文件排序进度%d%% sort_file_name:%s\n", right, buf.st_size, 
-					int(((int64)right * 100) / buf.st_size), sort_file_name);
+			printf("File sort progress %d%% sort_file_name:%s\n", int(((int64)right * 100) / buf.st_size), sort_file_name);
 			if((seg_fd = open(sort_file_name, O_RDWR | O_CREAT, 0766)) < 0){
 				fprintf(stderr, "open sort file %s error\n", sort_file_name);
 				return -1;
@@ -235,7 +234,7 @@ public:
 		}
 		int out_len = 0;
 		int last_rate = 0, rate;
-		printf("开始排序\n");
+		printf("Start to sort\n");
 		while(!pque.empty()){
 			FileSeg top(pque.top());
 			strncpy(out_ptr + out_len, top.stPtr(), top.size());
@@ -243,7 +242,7 @@ public:
 			rate = int(((int64)out_len * 100) / buf.st_size);
 			if(rate > last_rate + 2 || rate == 100){
 				last_rate = rate;
-				printf("排序进度:%d%%\n", rate);
+				printf("Sort progress %d%%\n", rate);
 			}
 			pque.pop();
 			// printf("top[%d,%d] [%d,%d]\n", top.st, top.ed, top.left, top.right);
