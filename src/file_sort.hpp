@@ -108,7 +108,7 @@ public:
 		sprintf(sort_file_name, "%s/sort_%d.txt", work_dir, seq_num);
 	}
 
-	int sort(char *in_file, char *out_file){
+	int sort(const char *in_file, const char *out_file){
 		int in_fd = 0, out_fd = 0;
 		char *ptr = NULL, *out_ptr;
 		struct stat buf = {0};
