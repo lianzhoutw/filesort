@@ -9,6 +9,7 @@
 #include <queue>
 #include <vector>
 #include <algorithm>
+#include "file_util.hpp"
 #define FILE_SORT_H_
 
 using namespace std;
@@ -104,7 +105,7 @@ public:
 	}
 	
 
-	void set_seg_file_name(char* sort_file_name, char* work_dir, int seq_num){
+	void setSegFileName(char* sort_file_name, const char* work_dir, int seq_num){
 		sprintf(sort_file_name, "%s/sort_%d.txt", work_dir, seq_num);
 	}
 
@@ -112,6 +113,10 @@ public:
 		int in_fd = 0, out_fd = 0;
 		char *ptr = NULL, *out_ptr;
 		struct stat buf = {0};
+		if(!FileUtil::isFileExist(in_file)){
+			fprintf(stderr, "Input file file %s can't be accessed\n", in_file);
+			return -1;
+		}
 		if ((in_fd = open(in_file, O_RDWR)) < 0)
 		{
 			fprintf(stderr, "open file %s error\n", in_file);
@@ -152,8 +157,13 @@ public:
 		close(out_fd);
 		//创建临时目录
 		const int FILE_NAME_MAX_LEN = 64;
-		char work_dir[FILE_NAME_MAX_LEN], sort_file_name[FILE_NAME_MAX_LEN];
-		tmpnam(work_dir);
+		char sort_file_name[FILE_NAME_MAX_LEN];
+		string work_dir_str = FileUtil::mkRandomDir("/tmp/sort_");	
+		if(work_dir_str.size() == 0){
+			printf("Create random work directory error\n");
+			return -1;
+		}
+		const char *work_dir = work_dir_str.data();
 		printf("work_dir:%s\n", work_dir);
 		mkdir(work_dir, 0766);
 		const int CBUF_LEN = 32;
@@ -185,7 +195,7 @@ public:
 				fprintf(stderr, "seg_file_size(%d) is greater than max_seg_size(%d)\n", seg_file_size, max_seg_size);
 				return -1;
 			}
-			set_seg_file_name(sort_file_name, work_dir, file_num);
+			setSegFileName(sort_file_name, work_dir, file_num);
 			printf("File sort progress %d%% sort_file_name:%s\n", int(((int64)right * 100) / buf.st_size), sort_file_name);
 			if((seg_fd = open(sort_file_name, O_RDWR | O_CREAT, 0766)) < 0){
 				fprintf(stderr, "open sort file %s error\n", sort_file_name);
@@ -256,7 +266,7 @@ public:
 		for(int i = 0; i < seg_fd_map_vec.size(); i++){
 			munmap(seg_fd_map_vec[i], seg_len_vec[i]);
 			if(del_tmp_file){
-				set_seg_file_name(sort_file_name, work_dir, i);
+				setSegFileName(sort_file_name, work_dir, i);
 				remove(sort_file_name);
 			}
 		}
