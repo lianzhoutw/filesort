@@ -14,7 +14,11 @@ public:
 	int 	seg_size; 	// Size in bytes of each segment file 
 	string 	cmd; 		// command
 	int 	test_num; 	// Number of test numbers	
+
 	const static string HELP_DESC;
+
+	const static int MAX_SEG_SIZE = 262144000; //250M
+	const static int MIN_SEG_SIZE = 1048576; //1M
 
 	FileSortOpt(){
 		seg_size = 10485760; //10M

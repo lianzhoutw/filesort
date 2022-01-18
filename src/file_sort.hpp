@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include "file_util.hpp"
+#include "file_sort_opt.hpp"
 #define FILE_SORT_H_
 
 using namespace std;
@@ -95,13 +96,11 @@ public:
 
 class FileSort{
 protected:
-	int seg_size; 	//每个分段的长度
 	int max_seg_size; //每个分段的最大长度
 
 public:
 	FileSort(){
-		seg_size = 10485760;
-		max_seg_size = 209715200; //200M
+		max_seg_size = FileSortOpt::MAX_SEG_SIZE * 2; //200M
 	}
 	
 
@@ -109,7 +108,11 @@ public:
 		sprintf(sort_file_name, "%s/sort_%d.txt", work_dir, seq_num);
 	}
 
-	int sort(const char *in_file, const char *out_file){
+	//int sort(const char *in_file, const char *out_file){
+	int sort(const FileSortOpt & opt){
+		const char * in_file = 	opt.in_file.data();
+		const char * out_file =	opt.out_file.data();
+		const int seg_size = opt.seg_size; 	//每个分段的长度
 		int in_fd = 0, out_fd = 0;
 		char *ptr = NULL, *out_ptr;
 		struct stat buf = {0};

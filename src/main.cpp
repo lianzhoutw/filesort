@@ -87,26 +87,34 @@ int main(int argc, char *argv[])
 				break; 
 			default: 
 				printf("?? getopt returned character code 0%o ??\n", c);
-	   }
-   }
-   if(is_help){
+	   } 
+	}
+	// Check options
+	if(opt.seg_size < FileSortOpt::MIN_SEG_SIZE){
+		printf("Reset [seg-size] to the minimum value %d\n", FileSortOpt::MIN_SEG_SIZE);
+		opt.seg_size = FileSortOpt::MIN_SEG_SIZE;
+	}
+	if(opt.seg_size > FileSortOpt::MAX_SEG_SIZE){
+		printf("Reset [seg-size] to the maximum value %d\n", FileSortOpt::MAX_SEG_SIZE);
+		opt.seg_size = FileSortOpt::MAX_SEG_SIZE;
+	}
+	if(is_help){
 	   cout << FileSortOpt::HELP_DESC << endl ;
 	   return 0;
-   }
-   if(argc > 1){
+	}
+	if(argc > 1){
 	   opt.in_file = string(argv[argc - 1]);
-   }
-   cout << "opt.cmd: " << opt.cmd << endl;
-   if(opt.cmd == "gen_test"){
+	}
+	if(opt.cmd == "gen_test"){
 	   genTestContent(opt.in_file.c_str(), opt.test_num);
-   }else{
+	}else{
 	   FileSort fileSort;
-	   fileSort.sort(opt.in_file.c_str(), opt.out_file.c_str());
-   }
-   /*
+	   fileSort.sort(opt);
+	}
+	/*
 	char *in_file = argv[1], *out_file = argv[2];
 	printf("input file %s\noutput file %s\n", in_file, out_file);
 	//genTestContent(in_file);
 	*/
-    return 0;
+	return 0;
 }
