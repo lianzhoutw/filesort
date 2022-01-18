@@ -38,6 +38,6 @@ const string FileSortOpt::HELP_DESC = "Sort a big file which can't be loaded int
   -o,--out-file	Output file which stores the sorting results\n\
   -t,--test-num	Number of test content, default is 1000000\n\
   -c,--cmd 		Command to execute\n\
-  				- sort (default) 	Sort the FILE\n\
-				- gen_test 			Generate test content to FILE\n";
+                 - sort (default) 	Sort the FILE\n\
+                 - gen_test 		Generate test content to FILE\n";
 #endif

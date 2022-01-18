@@ -9,6 +9,8 @@ if [ $? -eq 0 ]; then
 	#$sh_root/bin/filesort -cgen_test -t200000 $in_file
 	#Sort big file
 	$sh_root/bin/filesort -s 100 -o $out_file $in_file
+	#Show help document
+	#$sh_root/bin/filesort -h
 	ed_time=`date +"%s"`
 	used_time=$((ed_time-st_time))
 	echo "耗时:${used_time}秒"
