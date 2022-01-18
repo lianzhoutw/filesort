@@ -1,5 +1,5 @@
 # filesort
-Sort a big file which can't be loaded into memory  
+Sort a big file which can't be loaded into memory based on file merge sort algorithm .
 Usage: filesort [OPTIONS] FILE  
 * -h,--help     Display this help and exit.  
 * -o,--out-file Output file which stores the sorting results  
